@@ -30,7 +30,7 @@ func (usecase *userUsecase) PostLogin(data user.UserCore) (string, error) {
 }
 
 func (usecase *userUsecase) PostData(data user.UserCore) (int, error) {
-	if data.Nama_User == "" || data.Email == "" || data.Password == "" {
+	if data.Nama_User == "" || data.Email == "" || data.Password == "" || data.Role == "" || data.Team == "" || data.Status == "" {
 		return -1, errors.New("data input ada yang kosong")
 	}
 
