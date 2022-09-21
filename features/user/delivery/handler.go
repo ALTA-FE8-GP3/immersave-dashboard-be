@@ -20,7 +20,7 @@ func New(e *echo.Echo, usecase user.UsecaseInterface) {
 	}
 
 	e.POST("/login", handler.LoginUser)
-	e.POST("/users", handler.PostData, middlewares.JWTMiddleware())
+	e.POST("/users", handler.PostData)
 	e.PUT("/users/:id", handler.UpdateUser)
 }
 
