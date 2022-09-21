@@ -22,6 +22,7 @@ func New(e *echo.Echo, usecase class.UsecaseInterface) {
 	e.GET("/class", handler.GetAllClass, middlewares.JWTMiddleware())
 	e.POST("/class", handler.PostData, middlewares.JWTMiddleware())
 	e.PUT("/class/:id", handler.UpdateClass, middlewares.JWTMiddleware())
+
 }
 
 func (delivery *ClassDelivery) GetAllClass(c echo.Context) error {

@@ -53,3 +53,11 @@ func (usecase *userUsecase) GetAllUser() ([]user.UserCore, error) {
 	return results, err
 
 }
+
+func (usecase *userUsecase) DeleteUser(id int) (int, error) {
+	result, err := usecase.userData.DeleteUser(id)
+	if err != nil {
+		return -1, err
+	}
+	return result, nil
+}
