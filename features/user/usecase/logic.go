@@ -47,3 +47,9 @@ func (usecase *userUsecase) PutData(data user.UserCore) (int, error) {
 	row, err := usecase.userData.UpdateUser(data)
 	return row, err
 }
+
+func (usecase *userUsecase) GetAllUser() ([]user.UserCore, error) {
+	results, err := usecase.userData.SelectAllUser()
+	return results, err
+
+}

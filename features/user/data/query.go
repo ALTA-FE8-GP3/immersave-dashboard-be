@@ -53,6 +53,18 @@ func (repo *userData) InsertData(data user.UserCore) (int, error) {
 	return int(tx.RowsAffected), nil
 }
 
+func (repo *userData) SelectAllUser() ([]user.UserCore, error) {
+	var allUser []User
+	tx := repo.db.Find(&allUser)
+
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	produk_List := toCoreList(allUser)
+	return produk_List, nil
+}
+
 func (repo *userData) LoginUser(data user.UserCore) (string, error) {
 	var userData User
 	tx := repo.db.Where("email = ?", data.Email).First(&userData)
