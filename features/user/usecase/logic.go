@@ -42,3 +42,8 @@ func (usecase *userUsecase) PostData(data user.UserCore) (int, error) {
 	return row, err
 
 }
+
+func (usecase *userUsecase) PutData(data user.UserCore) (int, error) {
+	row, err := usecase.userData.UpdateUser(data)
+	return row, err
+}
