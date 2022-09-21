@@ -84,3 +84,14 @@ func (repo *classData) SelectById(id_class int) (class.ClassCore, error) {
 	return dataClassCore, nil
 
 }
+
+func (repo *classData) ClassDelete(id int) (int, error) {
+	var classData Class
+	classData.ID = uint(id)
+	tx := repo.db.Delete(&classData)
+
+	if tx.Error != nil {
+		return -1, tx.Error
+	}
+	return int(tx.RowsAffected), nil
+}

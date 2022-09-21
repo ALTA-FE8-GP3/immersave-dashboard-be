@@ -20,8 +20,10 @@ func New(e *echo.Echo, usecase class.UsecaseInterface) {
 	}
 
 	e.GET("/class", handler.GetAllClass, middlewares.JWTMiddleware())
+	e.GET("/class/:id", handler.GetClassById, middlewares.JWTMiddleware())
 	e.POST("/class", handler.PostData, middlewares.JWTMiddleware())
 	e.PUT("/class/:id", handler.UpdateClass, middlewares.JWTMiddleware())
+	e.DELETE("/class/:id", handler.DeleteClass, middlewares.JWTMiddleware())
 
 }
 
@@ -85,4 +87,41 @@ func (delivery *ClassDelivery) UpdateClass(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Update Row Affected Is Not 1"))
 	}
 	return c.JSON(http.StatusOK, helper.Success_Resp("Success Update Data"))
+}
+
+func (delivery *ClassDelivery) GetClassById(c echo.Context) error {
+
+	id := c.Param("id")
+	id_conv, err_conv := strconv.Atoi(id)
+
+	if err_conv != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err_conv.Error())
+	}
+
+	result, err := delivery.classUsecase.GetClassById(id_conv)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail get data"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_DataResp("success get data", FromCore(result)))
+
+}
+
+func (delivery *ClassDelivery) DeleteClass(c echo.Context) error {
+
+	id := c.Param("id")
+	id_conv, err_conv := strconv.Atoi(id)
+
+	if err_conv != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err_conv.Error())
+	}
+
+	row, err := delivery.classUsecase.DeleteClass(id_conv)
+
+	if err != nil || row != 1 {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail delete data"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_Resp("success delete data"))
 }

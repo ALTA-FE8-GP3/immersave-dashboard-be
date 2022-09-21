@@ -44,3 +44,11 @@ func (usecase *classUsecase) GetClassById(id_class int) (class.ClassCore, error)
 	dataClass, err := usecase.classData.SelectById(id_class)
 	return dataClass, err
 }
+
+func (usecase *classUsecase) DeleteClass(id int) (int, error) {
+	result, err := usecase.classData.ClassDelete(id)
+	if err != nil {
+		return -1, err
+	}
+	return result, nil
+}
