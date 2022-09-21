@@ -15,7 +15,13 @@ func main() {
 	cfg := config.GetConfig()
 	db := mysql.InitMysqlDB(cfg)
 	e := echo.New()
-	e.Use(middleware.CORS())
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
+	}))
+
 	migration.InitMigrate(db)
 	factory.InitFactory(e, db)
 
