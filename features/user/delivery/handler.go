@@ -5,6 +5,7 @@ import (
 	"project/immersive-dashboard/features/user"
 	"project/immersive-dashboard/middlewares"
 	"project/immersive-dashboard/utils/helper"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,6 +21,7 @@ func New(e *echo.Echo, usecase user.UsecaseInterface) {
 
 	e.POST("/login", handler.LoginUser)
 	e.POST("/users", handler.PostData, middlewares.JWTMiddleware())
+	e.PUT("/users/:id", handler.UpdateUser)
 }
 
 func (delivery *UserDelivery) LoginUser(c echo.Context) error {
@@ -62,4 +64,33 @@ func (delivery *UserDelivery) PostData(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, helper.Success_Resp("Success Insert"))
 
+}
+
+func (delivery *UserDelivery) UpdateUser(c echo.Context) error {
+
+	id := c.Param("id")
+	id_conv, err_conv := strconv.Atoi(id)
+
+	if err_conv != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err_conv.Error())
+	}
+	var userUpdate UserRequest
+	errBind := c.Bind(&userUpdate)
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Fail Bind User Data"))
+	}
+
+	userUpdateCore := ToCore(userUpdate)
+	userUpdateCore.ID = uint(id_conv)
+
+	row, err := delivery.userUsecase.PutData(userUpdateCore)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Update User Data"))
+	}
+
+	if row != 1 {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Update Row Affected Is Not 1"))
+	}
+	return c.JSON(http.StatusOK, helper.Success_Resp("Success Update Data"))
 }
