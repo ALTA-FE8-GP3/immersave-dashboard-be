@@ -23,6 +23,7 @@ func New(e *echo.Echo, usecase user.UsecaseInterface) {
 	e.POST("/login", handler.LoginUser)
 	e.POST("/users", handler.PostData, middlewares.JWTMiddleware())
 	e.PUT("/users/:id", handler.UpdateUser, middlewares.JWTMiddleware())
+	e.DELETE("/users/:id", handler.DeleteDataUser, middlewares.JWTMiddleware())
 }
 
 func (delivery *UserDelivery) GetUser(c echo.Context) error {
@@ -105,4 +106,22 @@ func (delivery *UserDelivery) UpdateUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Update Row Affected Is Not 1"))
 	}
 	return c.JSON(http.StatusOK, helper.Success_Resp("Success Update Data"))
+}
+
+func (delivery *UserDelivery) DeleteDataUser(c echo.Context) error {
+
+	id := c.Param("id")
+	id_conv, err_conv := strconv.Atoi(id)
+
+	if err_conv != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err_conv.Error())
+	}
+
+	row, err := delivery.userUsecase.DeleteUser(id_conv)
+
+	if err != nil || row != 1 {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Delete  Data"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_Resp("Success Delete  Data"))
 }

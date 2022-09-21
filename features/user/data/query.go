@@ -132,3 +132,14 @@ func (repo *userData) UpdateUser(data user.UserCore) (int, error) {
 	}
 	return int(tx.RowsAffected), nil
 }
+
+func (repo *userData) DeleteUser(id int) (int, error) {
+	var userData User
+	userData.ID = uint(id)
+	tx := repo.db.Delete(&userData)
+
+	if tx.Error != nil {
+		return -1, tx.Error
+	}
+	return int(tx.RowsAffected), nil
+}
