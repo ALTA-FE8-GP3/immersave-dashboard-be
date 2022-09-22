@@ -24,6 +24,7 @@ func New(e *echo.Echo, usecase mentee.UsecaseInterface) {
 	e.GET("/mentee", handler.GetMentee, middlewares.JWTMiddleware())
 	e.GET("/mentee/:id", handler.GetMenteeById, middlewares.JWTMiddleware())
 	e.DELETE("/mentee/:id", handler.DeleteDataMentee, middlewares.JWTMiddleware())
+	e.PUT("/mentee/:id", handler.UpdateMenteeId, middlewares.JWTMiddleware())
 
 }
 
@@ -95,4 +96,33 @@ func (delivery *MenteeDelivery) GetMenteeById(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, helper.Success_DataResp("success get data", FromCore(result)))
 
+}
+
+func (delivery *MenteeDelivery) UpdateMenteeId(c echo.Context) error {
+
+	id := c.Param("id")
+	id_conv, err_conv := strconv.Atoi(id)
+
+	if err_conv != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err_conv.Error())
+	}
+	var menteeUpdate MenteeRequest
+	errBind := c.Bind(&menteeUpdate)
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind user data"))
+	}
+
+	menteeUpdateCore := ToCore(menteeUpdate)
+	menteeUpdateCore.ID = uint(id_conv)
+
+	row, err := delivery.menteeUsecase.UpdateMenteeId(menteeUpdateCore)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail update data"))
+	}
+
+	if row != 1 {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("update row affected is not 1"))
+	}
+	return c.JSON(http.StatusOK, helper.Success_Resp("success update data"))
 }
