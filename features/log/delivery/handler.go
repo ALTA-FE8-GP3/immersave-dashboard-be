@@ -3,10 +3,12 @@ package delivery
 import (
 	"fmt"
 	"net/http"
+	"project/immersive-dashboard/config"
 	"project/immersive-dashboard/features/log"
 	"project/immersive-dashboard/middlewares"
 	"project/immersive-dashboard/utils/helper"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,8 +22,9 @@ func New(e *echo.Echo, usecase log.UsecaseInterface) {
 		logUsecase: usecase,
 	}
 
-	e.POST("/mentee", handler.PostLog, middlewares.JWTMiddleware())
-	e.GET("/mentee/:id", handler.GetLogById, middlewares.JWTMiddleware())
+	e.POST("/log", handler.PostLog, middlewares.JWTMiddleware())
+	e.GET("/log/:id", handler.GetLogById, middlewares.JWTMiddleware())
+	e.GET("/log", handler.GetAlllog, middlewares.JWTMiddleware())
 
 }
 
@@ -31,17 +34,38 @@ func (delivery *LogDelivery) PostLog(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind data"))
 	}
-	fmt.Println(log_RequestData)
-	fmt.Println(ToCore(log_RequestData))
+
+	dataFoto, infoFoto, fotoerr := c.Request().FormFile("url_file")
+	if fotoerr != http.ErrMissingFile || fotoerr == nil {
+		format, errf := helper.CheckFile(infoFoto.Filename)
+		if errf != nil {
+			return c.JSON(http.StatusBadRequest, helper.Failed_Resp("Format Error"))
+		}
+		//
+		err_image_size := helper.CheckSize(infoFoto.Size)
+		if err_image_size != nil {
+			return c.JSON(http.StatusBadRequest, err_image_size)
+		}
+		//
+		waktu := fmt.Sprintf("%v", time.Now())
+		imageName := strconv.Itoa(userid) + "_" + log_RequestData.Name + waktu + "." + format
+
+		imageaddress, errupload := helper.UploadFileToS3(config.FolderName, imageName, config.FileType, dataFoto)
+		if errupload != nil {
+			return c.JSON(http.StatusInternalServerError, helper.Failed_Resp("failed to upload file"))
+		}
+
+		log_RequestData.Foto = imageaddress
+	}
+
 	row, err := delivery.logUsecase.PostData(ToCore(log_RequestData))
 
-	fmt.Println(err)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Input User Data"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail input data"))
 	}
 
 	if row != 1 {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Insert Row Affected Is Not 1"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("insert row affected is not 1"))
 	}
 
 	return c.JSON(http.StatusOK, helper.Success_Resp("success insert data"))
@@ -63,5 +87,16 @@ func (delivery *LogDelivery) GetLogById(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.Success_DataResp("success get data", FromCore(result)))
+
+}
+
+func (delivery *LogDelivery) GetAlllog(c echo.Context) error {
+	result, err := delivery.logUsecase.GetAlllog()
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail get data"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_DataResp("get data", FromCoreList(result)))
 
 }
