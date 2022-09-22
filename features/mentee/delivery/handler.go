@@ -23,6 +23,7 @@ func New(e *echo.Echo, usecase mentee.UsecaseInterface) {
 	e.POST("/mentee", handler.PostMentee, middlewares.JWTMiddleware())
 	e.GET("/mentee", handler.GetMentee, middlewares.JWTMiddleware())
 	e.GET("/mentee/:id", handler.GetMenteeById, middlewares.JWTMiddleware())
+	e.DELETE("/mentee/:id", handler.DeleteDataMentee, middlewares.JWTMiddleware())
 
 }
 
