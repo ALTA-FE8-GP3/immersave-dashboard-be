@@ -15,6 +15,7 @@ type menteeResponse struct {
 	Graduate    string `json:"graduate" form:"graduate"`
 	Status      string `json:"status" form:"status"`
 	ClassID     uint   `json:"class_id" form:"class_id"`
+	Nama_Class  string `json:"nama_class" form:"nama_class"`
 }
 
 func FromCore(dataCore mentee.MenteeCore) menteeResponse {
@@ -31,6 +32,7 @@ func FromCore(dataCore mentee.MenteeCore) menteeResponse {
 		Graduate:    dataCore.Graduate,
 		Status:      dataCore.Status,
 		ClassID:     dataCore.ClassID,
+		Nama_Class:  dataCore.Nama_Class,
 	}
 }
 

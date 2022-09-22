@@ -37,8 +37,9 @@ func (repo *menteeData) InsertData(data mentee.MenteeCore) (int, error) {
 
 func (repo *menteeData) SelectAllMentee() ([]mentee.MenteeCore, error) {
 	var allMentee []Mentee
-	tx := repo.db.Find(&allMentee)
 
+	// txPreload := repo.db.Preload("Class").Find(&classData
+	tx := repo.db.Preload("Class").Find(&allMentee)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

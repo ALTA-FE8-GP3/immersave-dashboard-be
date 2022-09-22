@@ -4,6 +4,7 @@ type ClassCore struct {
 	ID         uint
 	Nama_Class string
 	UserID     uint
+	Nama_User  string
 }
 
 type UsecaseInterface interface {

@@ -58,6 +58,7 @@ func (dataClass *Class) toCore() class.ClassCore {
 		ID:         dataClass.ID,
 		Nama_Class: dataClass.Nama_Class,
 		UserID:     dataClass.UserID,
+		Nama_User:  dataClass.User.Nama_User,
 	}
 }
 

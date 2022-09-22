@@ -79,6 +79,7 @@ func (dataMentee *Mentee) toCore() mentee.MenteeCore {
 		Graduate:         dataMentee.Graduate,
 		Status:           dataMentee.Status,
 		ClassID:          dataMentee.ClassID,
+		Nama_Class:       dataMentee.Class.Nama_Class,
 	}
 }
 
