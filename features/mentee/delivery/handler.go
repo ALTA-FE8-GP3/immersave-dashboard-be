@@ -22,6 +22,8 @@ func New(e *echo.Echo, usecase mentee.UsecaseInterface) {
 
 	e.POST("/mentee", handler.PostMentee, middlewares.JWTMiddleware())
 	e.GET("/mentee", handler.GetMentee, middlewares.JWTMiddleware())
+	e.GET("/mentee/:id", handler.GetMenteeById, middlewares.JWTMiddleware())
+
 }
 
 func (delivery *MenteeDelivery) PostMentee(c echo.Context) error {
@@ -73,4 +75,23 @@ func (delivery *MenteeDelivery) DeleteDataMentee(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.Success_Resp("success delete data"))
+}
+
+func (delivery *MenteeDelivery) GetMenteeById(c echo.Context) error {
+
+	id := c.Param("id")
+	id_conv, err_conv := strconv.Atoi(id)
+
+	if err_conv != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err_conv.Error())
+	}
+
+	result, err := delivery.menteeUsecase.GetMenteeById(id_conv)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail get data"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_DataResp("success get data", FromCore(result)))
+
 }
