@@ -1,6 +1,7 @@
 package data
 
 import (
+	"fmt"
 	"project/immersive-dashboard/features/mentee"
 
 	"gorm.io/gorm"
@@ -20,7 +21,7 @@ func New(db *gorm.DB) mentee.DataInterface {
 func (repo *menteeData) InsertData(data mentee.MenteeCore) (int, error) {
 
 	newUser := fromCore(data)
-
+	fmt.Println(newUser)
 	tx := repo.db.Create(&newUser)
 	if tx.Error != nil {
 		return 0, tx.Error

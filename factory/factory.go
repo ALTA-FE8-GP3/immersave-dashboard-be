@@ -27,7 +27,7 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	classDelivery.New(e, classUsecaseFactory)
 
 	menteeDataFactory := menteeData.New(db)
-	menteeUsecaseFactory := menteeUsecase.New(menteeDataFactory, classDataFactory)
+	menteeUsecaseFactory := menteeUsecase.New(menteeDataFactory)
 	menteeDelivery.New(e, menteeUsecaseFactory)
 
 }

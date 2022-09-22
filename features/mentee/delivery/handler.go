@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	"fmt"
 	"net/http"
 	"project/immersive-dashboard/features/mentee"
 	"project/immersive-dashboard/middlewares"
@@ -26,14 +27,20 @@ func (delivery *MenteeDelivery) PostMentee(c echo.Context) error {
 	var mentee_RequestData MenteeRequest
 	errBind := c.Bind(&mentee_RequestData)
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Fail Bind Data"))
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind data"))
 	}
-
+	fmt.Println(mentee_RequestData)
+	fmt.Println(ToCore(mentee_RequestData))
 	row, err := delivery.menteeUsecase.PostData(ToCore(mentee_RequestData))
 
-	if err != nil || row != 1 {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Make New Cart"))
+	fmt.Println(err)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Input User Data"))
 	}
 
-	return c.JSON(http.StatusOK, helper.Success_Resp("Success Make New Cart"))
+	if row != 1 {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Insert Row Affected Is Not 1"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_Resp("success insert data"))
 }

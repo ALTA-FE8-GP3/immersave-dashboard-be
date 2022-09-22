@@ -21,8 +21,7 @@ type MenteeCore struct {
 	Major            string
 	Graduate         string
 	Status           string
-	Id_Class         uint
-	Nama_Class       string
+	ClassID          uint
 	Created_At       time.Time
 	Updated_At       time.Time
 }
