@@ -51,7 +51,7 @@ func (delivery *MenteeDelivery) PostMentee(c echo.Context) error {
 }
 
 func (delivery *MenteeDelivery) GetMentee(c echo.Context) error {
-	category := c.QueryParam("type")
+	category := c.QueryParam("category")
 	status := c.QueryParam("status")
 	class_id, err := strconv.Atoi(c.QueryParam("class_id"))
 	if err != nil && class_id != 0 {
