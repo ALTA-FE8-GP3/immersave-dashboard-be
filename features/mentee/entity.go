@@ -22,6 +22,21 @@ type MenteeCore struct {
 	Graduate         string
 	Status           string
 	Id_Class         uint
+	Nama_Class       string
 	Created_At       time.Time
 	Updated_At       time.Time
+}
+
+type UsecaseInterface interface {
+	// GetAllUser() (data []UserCore, err error)
+	PostData(data MenteeCore) (row int, err error)
+	// PutData(data UserCore) (row int, err error)
+	// DeleteUser(id int) (row int, err error)
+}
+
+type DataInterface interface {
+	// SelectAllUser() (data []UserCore, err error)
+	InsertData(data MenteeCore) (row int, err error)
+	// 	UpdateUser(data UserCore) (row int, err error)
+	// 	DeleteUser(id int) (row int, err error)
 }

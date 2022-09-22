@@ -9,6 +9,10 @@ import (
 	classDelivery "project/immersive-dashboard/features/class/delivery"
 	classUsecase "project/immersive-dashboard/features/class/usecase"
 
+	menteeData "project/immersive-dashboard/features/mentee/data"
+	menteeDelivery "project/immersive-dashboard/features/mentee/delivery"
+	menteeUsecase "project/immersive-dashboard/features/mentee/usecase"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -21,5 +25,9 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	classDataFactory := classData.New(db)
 	classUsecaseFactory := classUsecase.New(classDataFactory)
 	classDelivery.New(e, classUsecaseFactory)
+
+	menteeDataFactory := menteeData.New(db)
+	menteeUsecaseFactory := menteeUsecase.New(menteeDataFactory, classDataFactory)
+	menteeDelivery.New(e, menteeUsecaseFactory)
 
 }
