@@ -77,13 +77,14 @@ func (repo *classData) UpdateClass(data class.ClassCore) (int, error) {
 func (repo *classData) SelectById(id_class int) (class.ClassCore, error) {
 	var dataClass Class
 	dataClass.ID = uint(id_class)
+	tx := repo.db.Preload("User").Find(&dataClass)
 
-	tx := repo.db.First(&dataClass)
+	// tx := repo.db.First(&dataClass)
 
 	if tx.Error != nil {
 		return class.ClassCore{}, tx.Error
 	}
-
+	// fmt.Println(dataClass.Nama_Class)
 	dataClassCore := dataClass.toCore()
 	return dataClassCore, nil
 

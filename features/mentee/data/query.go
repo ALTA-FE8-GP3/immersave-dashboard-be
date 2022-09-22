@@ -108,7 +108,7 @@ func (repo *menteeData) SelectMenteeById(id int) (mentee.MenteeCore, error) {
 	var dataMentee Mentee
 	dataMentee.ID = uint(id)
 
-	tx := repo.db.First(&dataMentee)
+	tx := repo.db.Preload("Class").Find(&dataMentee)
 
 	if tx.Error != nil {
 		return mentee.MenteeCore{}, tx.Error

@@ -17,7 +17,7 @@ func New(data log.DataInterface) log.UsecaseInterface {
 
 func (usecase *logUsecase) PostData(data log.LogCore) (int, error) {
 
-	if data.Feedback == "" || data.Url_File == "" || data.Status == "" {
+	if data.Feedback == "" || data.Url_File == "" || data.Status == "" || data.UserID == 0 || data.MenteeID == 0 {
 		return -1, errors.New("data input ada yang kosong")
 	}
 
@@ -33,4 +33,10 @@ func (usecase *logUsecase) PostData(data log.LogCore) (int, error) {
 func (usecase *logUsecase) GetLogById(id int) (log.LogCore, error) {
 	dataLog, err := usecase.logData.SelectLogById(id)
 	return dataLog, err
+}
+
+func (usecase *logUsecase) GetAlllog() ([]log.LogCore, error) {
+	results, err := usecase.logData.SelectAlllog()
+	return results, err
+
 }

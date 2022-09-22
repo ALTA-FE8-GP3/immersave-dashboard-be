@@ -43,12 +43,14 @@ func fromCore(dataCore log.LogCore) Log {
 
 func (dataLog *Log) toCore() log.LogCore {
 	return log.LogCore{
-		ID:       dataLog.ID,
-		Feedback: dataLog.Feedback,
-		MenteeID: dataLog.MenteeID,
-		UserID:   dataLog.UserID,
-		Url_File: dataLog.Url_file,
-		Status:   dataLog.Status,
+		ID:          dataLog.ID,
+		Feedback:    dataLog.Feedback,
+		MenteeID:    dataLog.MenteeID,
+		UserID:      dataLog.UserID,
+		Url_File:    dataLog.Url_file,
+		Status:      dataLog.Status,
+		Nama_User:   dataLog.User.Nama_User,
+		Nama_Mentee: dataLog.Mentee.Nama_Mentee,
 	}
 }
 

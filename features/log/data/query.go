@@ -34,7 +34,7 @@ func (repo *logData) SelectLogById(id int) (log.LogCore, error) {
 	var dataLog Log
 	dataLog.ID = uint(id)
 
-	tx := repo.db.First(&dataLog)
+	tx := repo.db.Preload("User").Preload("Mentee").Find(&dataLog)
 
 	if tx.Error != nil {
 		return log.LogCore{}, tx.Error
@@ -43,4 +43,16 @@ func (repo *logData) SelectLogById(id int) (log.LogCore, error) {
 	dataMenteeCore := dataLog.toCore()
 	return dataMenteeCore, nil
 
+}
+
+func (repo *logData) SelectAlllog() ([]log.LogCore, error) {
+	var allLog []Log
+	tx := repo.db.Preload("User").Preload("Mentee").Find(&allLog)
+
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	classCore := toCoreList(allLog)
+	return classCore, nil
 }
