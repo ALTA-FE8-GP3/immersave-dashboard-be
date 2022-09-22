@@ -29,3 +29,9 @@ func (usecase *menteeUsecase) PostData(data mentee.MenteeCore) (int, error) {
 	return row, err
 
 }
+
+func (usecase *menteeUsecase) GetAllMentee() ([]mentee.MenteeCore, error) {
+	results, err := usecase.menteeData.SelectAllMentee()
+	return results, err
+
+}

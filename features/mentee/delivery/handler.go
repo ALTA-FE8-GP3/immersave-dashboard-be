@@ -20,7 +20,7 @@ func New(e *echo.Echo, usecase mentee.UsecaseInterface) {
 	}
 
 	e.POST("/mentee", handler.PostMentee, middlewares.JWTMiddleware())
-	// e.GET("/carts", handler.GetAllCarts, middlewares.JWTMiddleware())
+	e.GET("/mentee", handler.GetMentee, middlewares.JWTMiddleware())
 }
 
 func (delivery *MenteeDelivery) PostMentee(c echo.Context) error {
@@ -43,4 +43,15 @@ func (delivery *MenteeDelivery) PostMentee(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.Success_Resp("success insert data"))
+}
+
+func (delivery *MenteeDelivery) GetMentee(c echo.Context) error {
+	result, err := delivery.menteeUsecase.GetAllMentee()
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail get data"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_DataResp("get all data", FromCoreList(result)))
+
 }

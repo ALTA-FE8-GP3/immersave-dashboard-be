@@ -19,21 +19,21 @@ func New(e *echo.Echo, usecase user.UsecaseInterface) {
 		userUsecase: usecase,
 	}
 
-	e.GET("/users", handler.GetUser, middlewares.JWTMiddleware())
+	e.GET("/users", handler.GetAllUser, middlewares.JWTMiddleware())
 	e.POST("/login", handler.LoginUser)
 	e.POST("/users", handler.PostData, middlewares.JWTMiddleware())
 	e.PUT("/users/:id", handler.UpdateUser, middlewares.JWTMiddleware())
 	e.DELETE("/users/:id", handler.DeleteDataUser, middlewares.JWTMiddleware())
 }
 
-func (delivery *UserDelivery) GetUser(c echo.Context) error {
+func (delivery *UserDelivery) GetAllUser(c echo.Context) error {
 	result, err := delivery.userUsecase.GetAllUser()
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail get all product data"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail get data"))
 	}
 
-	return c.JSON(http.StatusOK, helper.Success_DataResp("get all products data", FromCoreList(result)))
+	return c.JSON(http.StatusOK, helper.Success_DataResp("get data", FromCoreList(result)))
 
 }
 

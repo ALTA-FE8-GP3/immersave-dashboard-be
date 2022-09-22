@@ -27,14 +27,14 @@ type MenteeCore struct {
 }
 
 type UsecaseInterface interface {
-	// GetAllUser() (data []UserCore, err error)
+	GetAllMentee() (data []MenteeCore, err error)
 	PostData(data MenteeCore) (row int, err error)
 	// PutData(data UserCore) (row int, err error)
 	// DeleteUser(id int) (row int, err error)
 }
 
 type DataInterface interface {
-	// SelectAllUser() (data []UserCore, err error)
+	SelectAllMentee() (data []MenteeCore, err error)
 	InsertData(data MenteeCore) (row int, err error)
 	// 	UpdateUser(data UserCore) (row int, err error)
 	// 	DeleteUser(id int) (row int, err error)
