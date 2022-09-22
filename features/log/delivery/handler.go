@@ -2,10 +2,12 @@ package delivery
 
 import (
 	"net/http"
+	"project/immersive-dashboard/config"
 	"project/immersive-dashboard/features/log"
 	"project/immersive-dashboard/middlewares"
 	"project/immersive-dashboard/utils/helper"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -31,6 +33,31 @@ func (delivery *LogDelivery) PostLog(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind data"))
 	}
+
+
+	dataFoto, infoFoto, fotoerr := c.Request().FormFile("url_file")
+	if fotoerr != http.ErrMissingFile || fotoerr == nil {
+		format, errf := helper.CheckFile(infoFoto.Filename)
+		if errf != nil {
+			return c.JSON(http.StatusBadRequest, helper.Failed_Resp("Format Error"))
+		}
+		//
+		err_image_size := helper.CheckSize(infoFoto.Size)
+		if err_image_size != nil {
+			return c.JSON(http.StatusBadRequest, err_image_size)
+		}
+		//
+		waktu := fmt.Sprintf("%v", time.Now())
+		imageName := strconv.Itoa(userid) + "_" + log_RequestData.Name + waktu + "." + format
+
+		imageaddress, errupload := helper.UploadFileToS3(config.FolderName, imageName, config.FileType, dataFoto)
+		if errupload != nil {
+			return c.JSON(http.StatusInternalServerError, helper.Failed_Resp("failed to upload file"))
+		}
+
+		log_RequestData.Foto = imageaddress
+	}
+
 
 	row, err := delivery.logUsecase.PostData(ToCore(log_RequestData))
 
