@@ -14,7 +14,7 @@ type MenteeRequest struct {
 	Nama_Emergency   string `json:"nama_emergency" form:"nama_emergency"`
 	Phone_Emergency  uint   `json:"phone_emergency" form:"phone_emergency"`
 	Status_Emergency string `json:"status_emergency" form:"status_emergency"`
-	Type             string `json:"type" form:"type"`
+	Category         string `json:"category" form:"category"`
 	Major            string `json:"major" form:"major"`
 	Graduate         string `json:"graduate" form:"graduate"`
 	Status           string `json:"status" form:"status"`
@@ -34,7 +34,7 @@ func ToCore(dataRequest MenteeRequest) mentee.MenteeCore {
 		Nama_Emergency:   dataRequest.Nama_Emergency,
 		Phone_Emergency:  dataRequest.Phone_Emergency,
 		Status_Emergency: dataRequest.Status_Emergency,
-		Type:             dataRequest.Type,
+		Category:         dataRequest.Category,
 		Major:            dataRequest.Major,
 		Graduate:         dataRequest.Graduate,
 		Status:           dataRequest.Status,
