@@ -59,7 +59,7 @@ func (repo *classData) UpdateClass(data class.ClassCore) (int, error) {
 	}
 
 	if data.UserID != 0 {
-		classUpdate.Nama_Class = data.Nama_Class
+		classUpdate.UserID = data.UserID
 	}
 
 	tx := repo.db.Save(&classUpdate)
