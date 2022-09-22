@@ -10,7 +10,7 @@ type menteeResponse struct {
 	Telegram    string `json:"telegram" form:"telegram"`
 	Phone       uint   `json:"phone" form:"phone"`
 	Discord     string `json:"discord" form:"discord"`
-	Type        string `json:"type" form:"type"`
+	Category    string `json:"category" form:"category"`
 	Major       string `json:"major" form:"major"`
 	Graduate    string `json:"graduate" form:"graduate"`
 	Status      string `json:"status" form:"status"`
@@ -27,7 +27,7 @@ func FromCore(dataCore mentee.MenteeCore) menteeResponse {
 		Telegram:    dataCore.Telegram,
 		Phone:       dataCore.Phone,
 		Discord:     dataCore.Discord,
-		Type:        dataCore.Type,
+		Category:    dataCore.Category,
 		Major:       dataCore.Major,
 		Graduate:    dataCore.Graduate,
 		Status:      dataCore.Status,

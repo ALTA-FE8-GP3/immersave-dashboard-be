@@ -36,17 +36,61 @@ func (repo *menteeData) InsertData(data mentee.MenteeCore) (int, error) {
 	return int(tx.RowsAffected), nil
 }
 
-func (repo *menteeData) SelectAllMentee() ([]mentee.MenteeCore, error) {
-	var allMentee []Mentee
+func (repo *menteeData) SelectAllMentee(class_id int, category, status string) ([]mentee.MenteeCore, error) {
+	var dataMentee []Mentee
 
-	// txPreload := repo.db.Preload("Class").Find(&classData
-	tx := repo.db.Preload("Class").Find(&allMentee)
-	if tx.Error != nil {
-		return nil, tx.Error
+	if class_id != 0 && category != "" && status != "" {
+		tx := repo.db.Where("class_id = ? AND category = ? AND status = ?", class_id, category, status).Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
+	} else if class_id != 0 && category != "" {
+		tx := repo.db.Where("class_id = ? AND category = ?", class_id, category).Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
+	} else if class_id != 0 && status != "" {
+		tx := repo.db.Where("class_id = ? AND status = ?", class_id, status).Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
+	} else if category != "" && status != "" {
+		tx := repo.db.Where("category = ? AND status = ?", category, status).Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
+	} else if class_id != 0 {
+		tx := repo.db.Where("class_id = ?", class_id).Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
+	} else if category != "" {
+		tx := repo.db.Where("category = ?", category).Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
+	} else if status != "" {
+		tx := repo.db.Where("status = ?", status).Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
+	} else {
+		tx := repo.db.Preload("Class").Find(&dataMentee)
+
+		if tx.Error != nil {
+			return []mentee.MenteeCore{}, tx.Error
+		}
 	}
 
-	menteList := toCoreList(allMentee)
-	return menteList, nil
+	return toCoreList(dataMentee), nil
+
 }
 
 func (repo *menteeData) DeleteMentee(id int) (int, error) {
@@ -64,7 +108,7 @@ func (repo *menteeData) SelectMenteeById(id int) (mentee.MenteeCore, error) {
 	var dataMentee Mentee
 	dataMentee.ID = uint(id)
 
-	tx := repo.db.First(&dataMentee)
+	tx := repo.db.Preload("Class").Find(&dataMentee)
 
 	if tx.Error != nil {
 		return mentee.MenteeCore{}, tx.Error
@@ -126,8 +170,8 @@ func (repo *menteeData) UpdateMentee(data mentee.MenteeCore) (int, error) {
 		menteeUpdate.Status_Emergency = data.Status_Emergency
 	}
 
-	if data.Type != "" {
-		menteeUpdate.Type = data.Type
+	if data.Category != "" {
+		menteeUpdate.Category = data.Category
 	}
 
 	if data.Major != "" {

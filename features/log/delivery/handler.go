@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	"fmt"
 	"net/http"
 	"project/immersive-dashboard/config"
 	"project/immersive-dashboard/features/log"
@@ -35,6 +34,7 @@ func (delivery *LogDelivery) PostLog(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind data"))
 	}
 
+
 	dataFoto, infoFoto, fotoerr := c.Request().FormFile("url_file")
 	if fotoerr != http.ErrMissingFile || fotoerr == nil {
 		format, errf := helper.CheckFile(infoFoto.Filename)
@@ -57,6 +57,7 @@ func (delivery *LogDelivery) PostLog(c echo.Context) error {
 
 		log_RequestData.Foto = imageaddress
 	}
+
 
 	row, err := delivery.logUsecase.PostData(ToCore(log_RequestData))
 

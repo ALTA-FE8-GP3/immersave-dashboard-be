@@ -13,6 +13,10 @@ import (
 	menteeDelivery "project/immersive-dashboard/features/mentee/delivery"
 	menteeUsecase "project/immersive-dashboard/features/mentee/usecase"
 
+	logData "project/immersive-dashboard/features/log/data"
+	logDelivery "project/immersive-dashboard/features/log/delivery"
+	logUsecase "project/immersive-dashboard/features/log/usecase"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -29,5 +33,9 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	menteeDataFactory := menteeData.New(db)
 	menteeUsecaseFactory := menteeUsecase.New(menteeDataFactory)
 	menteeDelivery.New(e, menteeUsecaseFactory)
+
+	logDataFactory := logData.New(db)
+	logUsecaseFactory := logUsecase.New(logDataFactory)
+	logDelivery.New(e, logUsecaseFactory)
 
 }
