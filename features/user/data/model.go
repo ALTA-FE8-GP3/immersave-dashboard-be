@@ -1,6 +1,7 @@
 package data
 
 import (
+	mentee "project/immersive-dashboard/features/mentee/data"
 	"project/immersive-dashboard/features/user"
 
 	"gorm.io/gorm"
@@ -14,6 +15,26 @@ type User struct {
 	Team      string
 	Role      string
 	Status    string
+	Classes   []Class
+	Logs      []Log
+}
+
+type Class struct {
+	gorm.Model
+	Nama_Class string
+	UserID     uint
+	User       User
+}
+
+type Log struct {
+	gorm.Model
+	Feedback string
+	MenteeID uint
+	UserID   uint
+	Url_file string
+	Status   string
+	Mentee   mentee.Mentee
+	User     User
 }
 
 func fromCore(dataCore user.UserCore) User {

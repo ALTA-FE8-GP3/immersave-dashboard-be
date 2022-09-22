@@ -9,6 +9,41 @@ import (
 type Class struct {
 	gorm.Model
 	Nama_Class string
+	UserID     uint
+	Mentees    []Mentee
+	User       User
+}
+
+type Mentee struct {
+	gorm.Model
+	Nama_Mentee      string
+	Address          string
+	Home_Address     string
+	Email            string
+	Gender           string
+	Telegram         string
+	Phone            uint
+	Discord          string
+	Nama_Emergency   string
+	Phone_Emergency  uint
+	Status_Emergency string
+	Type             string
+	Major            string
+	Graduate         string
+	Status           string
+	ClassID          uint
+	Class            Class
+}
+
+type User struct {
+	gorm.Model
+	Nama_User string
+	Email     string
+	Password  string
+	Team      string
+	Role      string
+	Status    string
+	Classes   []Class
 }
 
 func fromCore(dataCore class.ClassCore) Class {
