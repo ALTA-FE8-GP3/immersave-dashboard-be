@@ -48,3 +48,8 @@ func (usecase *menteeUsecase) GetMenteeById(id int) (mentee.MenteeCore, error) {
 	dataMentee, err := usecase.menteeData.SelectMenteeById(id)
 	return dataMentee, err
 }
+
+// func (usecase *menteeUsecase) UpdateMenteeId(data mentee.MenteeCore) (int, error) {
+// 	row, err := usecase.menteeData.UpdateMentee(data)
+// 	return row, err
+// }
