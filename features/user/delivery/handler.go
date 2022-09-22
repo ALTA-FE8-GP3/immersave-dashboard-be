@@ -43,17 +43,18 @@ func (delivery *UserDelivery) LoginUser(c echo.Context) error {
 	errBind := c.Bind(&userRequest_Login)
 
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Data Doesn't Exist"))
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("data doesn't exist"))
 	}
 
 	Token_JWT, err := delivery.userUsecase.PostLogin(ToCore(userRequest_Login))
 	claim, _ := middlewares.ExtractClaims(Token_JWT)
 	role := claim["userRole"].(string)
+	user := claim["userName"].(string)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Data Doesn't Exist"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("data doesn't exist"))
 	}
 
-	return c.JSON(http.StatusOK, helper.Success_Login("Success Login", Token_JWT, role))
+	return c.JSON(http.StatusOK, helper.Success_Login("success login", Token_JWT, role, user))
 
 }
 
@@ -62,20 +63,20 @@ func (delivery *UserDelivery) PostData(c echo.Context) error {
 	errBind := c.Bind(&userRequestData)
 
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Fail Bind User Data"))
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind user data"))
 	}
 
 	row, err := delivery.userUsecase.PostData(ToCore(userRequestData))
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Input User Data"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail input user data"))
 	}
 
 	if row != 1 {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Insert Row Affected Is Not 1"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("insert row affected is not 1"))
 	}
 
-	return c.JSON(http.StatusOK, helper.Success_Resp("Success Insert"))
+	return c.JSON(http.StatusOK, helper.Success_Resp("success insert"))
 
 }
 
@@ -90,7 +91,7 @@ func (delivery *UserDelivery) UpdateUser(c echo.Context) error {
 	var userUpdate UserRequest
 	errBind := c.Bind(&userUpdate)
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Fail Bind User Data"))
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind user data"))
 	}
 
 	userUpdateCore := ToCore(userUpdate)
@@ -99,13 +100,13 @@ func (delivery *UserDelivery) UpdateUser(c echo.Context) error {
 	row, err := delivery.userUsecase.PutData(userUpdateCore)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Update User Data"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail update user data"))
 	}
 
 	if row != 1 {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Update Row Affected Is Not 1"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("update row affected is not 1"))
 	}
-	return c.JSON(http.StatusOK, helper.Success_Resp("Success Update Data"))
+	return c.JSON(http.StatusOK, helper.Success_Resp("success update data"))
 }
 
 func (delivery *UserDelivery) DeleteDataUser(c echo.Context) error {
@@ -120,8 +121,8 @@ func (delivery *UserDelivery) DeleteDataUser(c echo.Context) error {
 	row, err := delivery.userUsecase.DeleteUser(id_conv)
 
 	if err != nil || row != 1 {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Delete  Data"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail delete data"))
 	}
 
-	return c.JSON(http.StatusOK, helper.Success_Resp("Success Delete  Data"))
+	return c.JSON(http.StatusOK, helper.Success_Resp("success delete data"))
 }

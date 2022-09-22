@@ -43,20 +43,20 @@ func (delivery *ClassDelivery) PostData(c echo.Context) error {
 	errBind := c.Bind(&classRequestData)
 
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Fail Bind Data"))
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind data"))
 	}
 
 	row, err := delivery.classUsecase.PostData(ToCore(classRequestData))
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Input Data"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail input data"))
 	}
 
 	if row != 1 {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Insert Row Affected Is Not 1"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("insert row affected is not 1"))
 	}
 
-	return c.JSON(http.StatusOK, helper.Success_Resp("Success Insert"))
+	return c.JSON(http.StatusOK, helper.Success_Resp("success insert"))
 
 }
 
@@ -71,7 +71,7 @@ func (delivery *ClassDelivery) UpdateClass(c echo.Context) error {
 	var classUpdate ClassRequest
 	errBind := c.Bind(&classUpdate)
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Fail Bind User Data"))
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind user data"))
 	}
 
 	classUpdateCore := ToCore(classUpdate)
@@ -80,13 +80,13 @@ func (delivery *ClassDelivery) UpdateClass(c echo.Context) error {
 	row, err := delivery.classUsecase.PutData(classUpdateCore)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Fail Update Data"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail update data"))
 	}
 
 	if row != 1 {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("Update Row Affected Is Not 1"))
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("update row affected is not 1"))
 	}
-	return c.JSON(http.StatusOK, helper.Success_Resp("Success Update Data"))
+	return c.JSON(http.StatusOK, helper.Success_Resp("success update data"))
 }
 
 func (delivery *ClassDelivery) GetClassById(c echo.Context) error {
