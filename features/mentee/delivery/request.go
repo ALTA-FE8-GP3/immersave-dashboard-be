@@ -4,7 +4,7 @@ import "project/immersive-dashboard/features/mentee"
 
 type MenteeRequest struct {
 	Nama_Mentee      string `json:"nama_mentee" form:"nama_mentee"`
-	Address          string `json:"adress" form:"adress"`
+	Address          string `json:"address" form:"address"`
 	Home_Address     string `json:"home_address" form:"home_address"`
 	Email            string `json:"email" form:"email"`
 	Gender           string `json:"gender" form:"gender"`
@@ -18,7 +18,7 @@ type MenteeRequest struct {
 	Major            string `json:"major" form:"major"`
 	Graduate         string `json:"graduate" form:"graduate"`
 	Status           string `json:"status" form:"status"`
-	Id_Class         uint   `json:"id_class" form:"id_class"`
+	ClassID          uint   `json:"class_id" form:"class_id"`
 }
 
 func ToCore(dataRequest MenteeRequest) mentee.MenteeCore {
@@ -38,6 +38,6 @@ func ToCore(dataRequest MenteeRequest) mentee.MenteeCore {
 		Major:            dataRequest.Major,
 		Graduate:         dataRequest.Graduate,
 		Status:           dataRequest.Status,
-		Id_Class:         dataRequest.Id_Class,
+		ClassID:          dataRequest.ClassID,
 	}
 }

@@ -56,7 +56,7 @@ func fromCore(dataCore mentee.MenteeCore) Mentee {
 		Major:            dataCore.Major,
 		Graduate:         dataCore.Graduate,
 		Status:           dataCore.Status,
-		ClassID:          dataCore.Id_Class,
+		ClassID:          dataCore.ClassID,
 	}
 }
 
@@ -78,7 +78,7 @@ func (dataMentee *Mentee) toCore() mentee.MenteeCore {
 		Major:            dataMentee.Major,
 		Graduate:         dataMentee.Graduate,
 		Status:           dataMentee.Status,
-		Id_Class:         dataMentee.ClassID,
+		ClassID:          dataMentee.ClassID,
 	}
 }
 
