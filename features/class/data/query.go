@@ -36,14 +36,14 @@ func (repo *classData) InsertClass(data class.ClassCore) (int, error) {
 
 func (repo *classData) SelectAllClass() ([]class.ClassCore, error) {
 	var allClass []Class
-	tx := repo.db.Find(&allClass)
+	tx := repo.db.Preload("User").Find(&allClass)
 
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
 
-	produk_List := toCoreList(allClass)
-	return produk_List, nil
+	classCore := toCoreList(allClass)
+	return classCore, nil
 }
 
 func (repo *classData) UpdateClass(data class.ClassCore) (int, error) {
