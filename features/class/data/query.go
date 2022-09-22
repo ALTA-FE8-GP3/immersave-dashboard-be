@@ -58,6 +58,10 @@ func (repo *classData) UpdateClass(data class.ClassCore) (int, error) {
 		classUpdate.Nama_Class = data.Nama_Class
 	}
 
+	if data.UserID != 0 {
+		classUpdate.Nama_Class = data.Nama_Class
+	}
+
 	tx := repo.db.Save(&classUpdate)
 	if tx.Error != nil {
 		return 0, tx.Error
