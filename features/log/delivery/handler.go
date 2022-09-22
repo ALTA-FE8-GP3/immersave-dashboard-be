@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	"fmt"
 	"net/http"
 	"project/immersive-dashboard/config"
 	"project/immersive-dashboard/features/log"
@@ -34,30 +35,28 @@ func (delivery *LogDelivery) PostLog(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail bind data"))
 	}
 
-
 	dataFoto, infoFoto, fotoerr := c.Request().FormFile("url_file")
 	if fotoerr != http.ErrMissingFile || fotoerr == nil {
 		format, errf := helper.CheckFile(infoFoto.Filename)
 		if errf != nil {
-			return c.JSON(http.StatusBadRequest, helper.Failed_Resp("Format Error"))
+			return c.JSON(http.StatusBadRequest, helper.Fail_Resp("Format Error"))
 		}
-		//
+		//checksize
 		err_image_size := helper.CheckSize(infoFoto.Size)
 		if err_image_size != nil {
 			return c.JSON(http.StatusBadRequest, err_image_size)
 		}
-		//
+		//rename
 		waktu := fmt.Sprintf("%v", time.Now())
-		imageName := strconv.Itoa(userid) + "_" + log_RequestData.Name + waktu + "." + format
+		imageName := strconv.Itoa(int(log_RequestData.MenteeID)) + "_" + strconv.Itoa(int(log_RequestData.UserID)) + waktu + "." + format
 
 		imageaddress, errupload := helper.UploadFileToS3(config.FolderName, imageName, config.FileType, dataFoto)
 		if errupload != nil {
-			return c.JSON(http.StatusInternalServerError, helper.Failed_Resp("failed to upload file"))
+			return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail to upload file"))
 		}
 
-		log_RequestData.Foto = imageaddress
+		log_RequestData.Url_File = imageaddress
 	}
-
 
 	row, err := delivery.logUsecase.PostData(ToCore(log_RequestData))
 

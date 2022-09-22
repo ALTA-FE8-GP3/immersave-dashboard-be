@@ -17,7 +17,7 @@ func New(data log.DataInterface) log.UsecaseInterface {
 
 func (usecase *logUsecase) PostData(data log.LogCore) (int, error) {
 
-	if data.Feedback == "" || data.Url_File == "" || data.Status == "" || data.UserID == 0 || data.MenteeID == 0 {
+	if data.Feedback == "" || data.Status == "" || data.UserID == 0 || data.MenteeID == 0 {
 		return -1, errors.New("data input ada yang kosong")
 	}
 

@@ -5,7 +5,7 @@ go 1.18
 require github.com/labstack/echo v3.3.10+incompatible
 
 require (
-
+	github.com/aws/aws-sdk-go v1.44.103
 	github.com/aws/aws-sdk-go-v2 v1.16.16 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
