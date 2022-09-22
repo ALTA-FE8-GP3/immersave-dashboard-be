@@ -83,7 +83,7 @@ func (repo *userData) LoginUser(data user.UserCore) (string, error) {
 		return "", errors.New("login failed")
 	}
 
-	token, errToken := middlewares.CreateToken(int(userData.ID), userData.Role)
+	token, errToken := middlewares.CreateToken(int(userData.ID), userData.Role, userData.Nama_User)
 	if errToken != nil {
 		return "", errToken
 	}

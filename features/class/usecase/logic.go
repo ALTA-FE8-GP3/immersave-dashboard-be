@@ -16,7 +16,7 @@ func New(data class.DataInterface) class.UsecaseInterface {
 }
 
 func (usecase *classUsecase) PostData(data class.ClassCore) (int, error) {
-	if data.Nama_Class == "" {
+	if data.Nama_Class == "" || data.UserID == 0 {
 		return -1, errors.New("data input ada yang kosong")
 	}
 
