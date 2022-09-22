@@ -57,3 +57,18 @@ func (repo *menteeData) DeleteMentee(id int) (int, error) {
 	}
 	return int(tx.RowsAffected), nil
 }
+
+func (repo *menteeData) SelectMenteeById(id int) (mentee.MenteeCore, error) {
+	var dataMentee Mentee
+	dataMentee.ID = uint(id)
+
+	tx := repo.db.First(&dataMentee)
+
+	if tx.Error != nil {
+		return mentee.MenteeCore{}, tx.Error
+	}
+
+	dataMenteeCore := dataMentee.toCore()
+	return dataMenteeCore, nil
+
+}

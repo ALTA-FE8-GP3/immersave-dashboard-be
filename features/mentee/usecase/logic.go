@@ -35,3 +35,16 @@ func (usecase *menteeUsecase) GetAllMentee() ([]mentee.MenteeCore, error) {
 	return results, err
 
 }
+
+func (usecase *menteeUsecase) Delete(id int) (int, error) {
+	result, err := usecase.menteeData.DeleteMentee(id)
+	if err != nil {
+		return -1, err
+	}
+	return result, nil
+}
+
+func (usecase *menteeUsecase) GetMenteeById(id int) (mentee.MenteeCore, error) {
+	dataMentee, err := usecase.menteeData.SelectMenteeById(id)
+	return dataMentee, err
+}

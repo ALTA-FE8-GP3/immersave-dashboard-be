@@ -30,12 +30,14 @@ type UsecaseInterface interface {
 	GetAllMentee() (data []MenteeCore, err error)
 	PostData(data MenteeCore) (row int, err error)
 	// PutData(data UserCore) (row int, err error)
-	// DeleteUser(id int) (row int, err error)
+	Delete(id int) (row int, err error)
+	GetMenteeById(id int) (data MenteeCore, err error)
 }
 
 type DataInterface interface {
 	SelectAllMentee() (data []MenteeCore, err error)
 	InsertData(data MenteeCore) (row int, err error)
 	// 	UpdateUser(data UserCore) (row int, err error)
-	// 	DeleteUser(id int) (row int, err error)
+	DeleteMentee(id int) (row int, err error)
+	SelectMenteeById(id int) (data MenteeCore, err error)
 }
