@@ -3,6 +3,7 @@ package class
 type ClassCore struct {
 	ID         uint
 	Nama_Class string
+	UserID     uint
 }
 
 type UsecaseInterface interface {

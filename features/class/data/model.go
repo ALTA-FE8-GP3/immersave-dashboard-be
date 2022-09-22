@@ -49,6 +49,7 @@ type User struct {
 func fromCore(dataCore class.ClassCore) Class {
 	return Class{
 		Nama_Class: dataCore.Nama_Class,
+		UserID:     dataCore.UserID,
 	}
 }
 
@@ -56,6 +57,7 @@ func (dataClass *Class) toCore() class.ClassCore {
 	return class.ClassCore{
 		ID:         dataClass.ID,
 		Nama_Class: dataClass.Nama_Class,
+		UserID:     dataClass.UserID,
 	}
 }
 

@@ -17,11 +17,12 @@ func JWTMiddleware() echo.MiddlewareFunc {
 	})
 }
 
-func CreateToken(userId int, userRole string) (string, error) {
+func CreateToken(userId int, userRole string, userName string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["userId"] = userId
 	claims["userRole"] = userRole
+	claims["userName"] = userName
 
 	claims["exp"] = time.Now().Add(time.Hour * 5).Unix() //expired stlh 5 jam
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
