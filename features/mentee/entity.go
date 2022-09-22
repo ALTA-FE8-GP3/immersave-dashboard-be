@@ -17,7 +17,7 @@ type MenteeCore struct {
 	Nama_Emergency   string
 	Phone_Emergency  uint
 	Status_Emergency string
-	Type             string
+	Category         string
 	Major            string
 	Graduate         string
 	Status           string
@@ -28,7 +28,7 @@ type MenteeCore struct {
 }
 
 type UsecaseInterface interface {
-	GetAllMentee() (data []MenteeCore, err error)
+	GetAllMentee(class_id int, category, status string) (data []MenteeCore, err error)
 	PostData(data MenteeCore) (row int, err error)
 	UpdateMenteeId(data MenteeCore) (row int, err error)
 	Delete(id int) (row int, err error)
@@ -36,7 +36,7 @@ type UsecaseInterface interface {
 }
 
 type DataInterface interface {
-	SelectAllMentee() (data []MenteeCore, err error)
+	SelectAllMentee(class_id int, category, status string) (data []MenteeCore, err error)
 	InsertData(data MenteeCore) (row int, err error)
 	UpdateMentee(data MenteeCore) (row int, err error)
 	DeleteMentee(id int) (row int, err error)

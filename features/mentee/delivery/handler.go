@@ -51,14 +51,20 @@ func (delivery *MenteeDelivery) PostMentee(c echo.Context) error {
 }
 
 func (delivery *MenteeDelivery) GetMentee(c echo.Context) error {
-	result, err := delivery.menteeUsecase.GetAllMentee()
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail get data"))
+	category := c.QueryParam("type")
+	status := c.QueryParam("status")
+	class_id, err := strconv.Atoi(c.QueryParam("class_id"))
+	if err != nil && class_id != 0 {
+		return c.JSON(http.StatusBadRequest, helper.Fail_Resp("fail converse class_id param"))
 	}
 
-	return c.JSON(http.StatusOK, helper.Success_DataResp("get all data", FromCoreList(result)))
+	dataMentee, err := delivery.menteeUsecase.GetAllMentee(class_id, category, status)
 
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_DataResp("get all data mentees success", FromCoreList(dataMentee)))
 }
 
 func (delivery *MenteeDelivery) DeleteDataMentee(c echo.Context) error {

@@ -20,7 +20,7 @@ type Mentee struct {
 	Nama_Emergency   string
 	Phone_Emergency  uint
 	Status_Emergency string
-	Type             string
+	Category         string
 	Major            string
 	Graduate         string
 	Status           string
@@ -52,7 +52,7 @@ func fromCore(dataCore mentee.MenteeCore) Mentee {
 		Nama_Emergency:   dataCore.Nama_Emergency,
 		Phone_Emergency:  dataCore.Phone_Emergency,
 		Status_Emergency: dataCore.Status_Emergency,
-		Type:             dataCore.Type,
+		Category:         dataCore.Category,
 		Major:            dataCore.Major,
 		Graduate:         dataCore.Graduate,
 		Status:           dataCore.Status,
@@ -74,7 +74,7 @@ func (dataMentee *Mentee) toCore() mentee.MenteeCore {
 		Nama_Emergency:   dataMentee.Nama_Emergency,
 		Phone_Emergency:  dataMentee.Phone_Emergency,
 		Status_Emergency: dataMentee.Status_Emergency,
-		Type:             dataMentee.Type,
+		Category:         dataMentee.Category,
 		Major:            dataMentee.Major,
 		Graduate:         dataMentee.Graduate,
 		Status:           dataMentee.Status,

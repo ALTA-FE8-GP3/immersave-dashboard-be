@@ -17,7 +17,7 @@ func New(data mentee.DataInterface) mentee.UsecaseInterface {
 
 func (usecase *menteeUsecase) PostData(data mentee.MenteeCore) (int, error) {
 
-	if data.Nama_Mentee == "" || data.Address == "" || data.Home_Address == "" || data.Email == "" || data.Gender == "" || data.Telegram == "" || data.Phone == 0 || data.Discord == "" || data.Nama_Emergency == "" || data.Phone_Emergency == 0 || data.Status_Emergency == "" || data.Type == "" || data.Major == "" || data.Graduate == "" || data.Status == "" || data.ClassID == 0 {
+	if data.Nama_Mentee == "" || data.Address == "" || data.Home_Address == "" || data.Email == "" || data.Gender == "" || data.Telegram == "" || data.Phone == 0 || data.Discord == "" || data.Nama_Emergency == "" || data.Phone_Emergency == 0 || data.Status_Emergency == "" || data.Category == "" || data.Major == "" || data.Graduate == "" || data.Status == "" || data.ClassID == 0 {
 		return -1, errors.New("data input ada yang kosong")
 	}
 
@@ -30,9 +30,9 @@ func (usecase *menteeUsecase) PostData(data mentee.MenteeCore) (int, error) {
 
 }
 
-func (usecase *menteeUsecase) GetAllMentee() ([]mentee.MenteeCore, error) {
-	results, err := usecase.menteeData.SelectAllMentee()
-	return results, err
+func (usecase *menteeUsecase) GetAllMentee(class_id int, category, status string) ([]mentee.MenteeCore, error) {
+	dataMentee, err := usecase.menteeData.SelectAllMentee(class_id, category, status)
+	return dataMentee, err
 
 }
 

@@ -27,7 +27,7 @@ type Mentee struct {
 	Nama_Emergency   string
 	Phone_Emergency  uint
 	Status_Emergency string
-	Type             string
+	Category         string
 	Major            string
 	Graduate         string
 	Status           string
