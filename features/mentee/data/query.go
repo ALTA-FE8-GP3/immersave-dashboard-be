@@ -20,14 +20,14 @@ func New(db *gorm.DB) mentee.DataInterface {
 
 func (repo *menteeData) InsertData(data mentee.MenteeCore) (int, error) {
 
-	newUser := fromCore(data)
-	fmt.Println(newUser)
-	tx := repo.db.Create(&newUser)
+	newmentee := fromCore(data)
+	fmt.Println(newmentee)
+	tx := repo.db.Create(&newmentee)
 	if tx.Error != nil {
 		return 0, tx.Error
 	}
 
-	// token, errToken := middlewares.CreateToken(int(newUser.ID))
+	// token, errToken := middlewares.CreateToken(int(newmentee.ID))
 	// if errToken != nil {
 	// 	return "", -1, errToken
 	// }
@@ -45,4 +45,15 @@ func (repo *menteeData) SelectAllMentee() ([]mentee.MenteeCore, error) {
 
 	menteList := toCoreList(allMentee)
 	return menteList, nil
+}
+
+func (repo *menteeData) DeleteMentee(id int) (int, error) {
+	var menteeData Mentee
+	menteeData.ID = uint(id)
+	tx := repo.db.Delete(&menteeData)
+
+	if tx.Error != nil {
+		return -1, tx.Error
+	}
+	return int(tx.RowsAffected), nil
 }

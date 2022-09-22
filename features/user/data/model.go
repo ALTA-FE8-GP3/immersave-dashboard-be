@@ -1,7 +1,7 @@
 package data
 
 import (
-	mentee "project/immersive-dashboard/features/mentee/data"
+	menteeModel "project/immersive-dashboard/features/mentee/data"
 	"project/immersive-dashboard/features/user"
 
 	"gorm.io/gorm"
@@ -33,7 +33,7 @@ type Log struct {
 	UserID   uint
 	Url_file string
 	Status   string
-	Mentee   mentee.Mentee
+	Mentee   menteeModel.Mentee
 	User     User
 }
 

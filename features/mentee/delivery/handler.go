@@ -6,6 +6,7 @@ import (
 	"project/immersive-dashboard/features/mentee"
 	"project/immersive-dashboard/middlewares"
 	"project/immersive-dashboard/utils/helper"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -54,4 +55,22 @@ func (delivery *MenteeDelivery) GetMentee(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, helper.Success_DataResp("get all data", FromCoreList(result)))
 
+}
+
+func (delivery *MenteeDelivery) DeleteDataMentee(c echo.Context) error {
+
+	id := c.Param("id")
+	id_conv, err_conv := strconv.Atoi(id)
+
+	if err_conv != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err_conv.Error())
+	}
+
+	row, err := delivery.menteeUsecase.Delete(id_conv)
+
+	if err != nil || row != 1 {
+		return c.JSON(http.StatusInternalServerError, helper.Fail_Resp("fail delete data"))
+	}
+
+	return c.JSON(http.StatusOK, helper.Success_Resp("success delete data"))
 }
